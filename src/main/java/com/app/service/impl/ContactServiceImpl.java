@@ -17,6 +17,7 @@ public class ContactServiceImpl implements ContactService {
 	@Override
 	public String saveContact(Contact contact) {
 		// TODO Auto-generated method stub
+		contact.setActiveSwitch("Y");
 		 contact=repo.save(contact);
 		if(contact.getId()!=null) {
 			return "Contact Saved Succesfully!!!";
@@ -40,11 +41,24 @@ public class ContactServiceImpl implements ContactService {
 	@Override
 	public String deleteOneContact(Integer id) {
 		// TODO Auto-generated method stub
-		 repo.deleteById(id);
-		 if(repo.existsById(id)) {
-			 return "Deleted Record Successfully:";
+//		 if(repo.existsById(id)) {
+//			 repo.deleteById(id);
+//			 return "Deleted Record Successfully:";
+//		 }
+//		 else {
+//		return "Record not Deleted";
+//		 }
+		Optional<Contact> opt=repo.findById(id);
+		 if(opt.isPresent()) {
+			 Contact c=opt.get();
+			 c.setActiveSwitch("N");
+			 repo.save(c);
+			 return "Record Deleted";
+			 
+		 }else {
+			 return "Record not Deleted";
 		 }
-		return "Record not Deleted";
+		
 	}
 
 	@Override
@@ -62,7 +76,7 @@ public class ContactServiceImpl implements ContactService {
 	@Override
 	public List<Contact> getAllContacts() {
 		// TODO Auto-generated method stub
-		List<Contact> lis=repo.findAll();
+		List<Contact> lis=repo.findByActiveSwitch("Y");
 		return lis;
 	}
 

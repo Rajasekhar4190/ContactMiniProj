@@ -17,6 +17,8 @@ public class Contact {
 	private String contName;
 	private String mail;
 	private Long phNo;
+	private String activeSwitch;
 	
 
 }
+ 
